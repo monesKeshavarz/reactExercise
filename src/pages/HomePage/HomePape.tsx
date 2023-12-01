@@ -12,16 +12,15 @@ const HomePape: React.FC = (): any => {
   const listUser = () => {
     const users = localStorage.getItem('users');
     if (users !== null) {
-      const listUsers = JSON.parse(users);
+      const listUsers: UserType[] = JSON.parse(users);
       setUsers(listUsers);
     }
   };
   const userData = async (): Promise<void> => {
     try {
       const response = await fetch('https://jsonplaceholder.typicode.com/users');
-      const users = await response.json();
-      setUsers(users);
-      console.log(users);
+      const user: UserType[] = await response.json();
+      setUsers((prevUsers)=>(prevUsers!==undefined ? [...prevUsers ,...user]: user));
     } catch (error) {
       console.error('Error fetching user data:', error);
     }
@@ -33,7 +32,8 @@ const HomePape: React.FC = (): any => {
 
   return (
     <>
-    <div className='h-screen  overflow-x-hidden flex flex-wrap overflow-scroll  bg-slate-100  text-slate-900 pt-20'>
+    <main className='h-screen  bg-slate-100 '>
+    <div className=' flex flex-wrap mx-auto max-w-screen-xl  overflow-x-hidden   text-slate-900 pt-20'>
         {
           users?.map((item , index) => {
             return(
@@ -54,6 +54,7 @@ const HomePape: React.FC = (): any => {
           })
         }
     </div>
+    </main>
       
     </>
   );
